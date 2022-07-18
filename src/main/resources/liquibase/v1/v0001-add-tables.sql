@@ -1,2 +1,4 @@
 create table "author"
-("id","name","age")
+("id" uuid primary key,
+"name" varchar(255),
+"age" int)
