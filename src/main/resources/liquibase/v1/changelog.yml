@@ -1,9 +1,9 @@
 databaseChangeLog:
   - changeSet:
-    id: v0001
-    author: k1moRNG
-    changes:
-      - sqlFile:
+      id: v0001
+      author: k1moRNG
+      changes:
+       - sqlFile:
           encoding: utf8
           path: v0001-add-tables.sql
           relativeToChangelogFile: true
