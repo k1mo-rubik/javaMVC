@@ -11,12 +11,22 @@ import java.util.UUID;
 @Service
 public class AuthorService {
     private AuthorRepository authorRepository;
-    public AuthorService(AuthorRepository authorRepository){
+    private BookService bookService;
+    public AuthorService(AuthorRepository authorRepository, BookService bookService){
         this.authorRepository = authorRepository;
+        this.bookService = bookService;
     }
     public void postAuthor(Author author){
         author.setId(UUID.randomUUID());
         authorRepository.save(author);
+    }
+
+
+
+    public void postAuthorsBook(UUID id, UUID book_id){
+        Author tempA = authorRepository.findById(id).get();
+        tempA.addAuthorsBook(bookService.getBookById(book_id));
+        authorRepository.save(tempA) ;
     }
     public void delAuthors(){
         authorRepository.deleteAll();

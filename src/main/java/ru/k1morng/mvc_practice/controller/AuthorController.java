@@ -3,6 +3,7 @@ package ru.k1morng.mvc_practice.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.entity.Author;
+import ru.k1morng.mvc_practice.entity.Book;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
 import java.util.List;
@@ -22,7 +23,14 @@ public class AuthorController {
         authorService.postAuthor(newAuthor);
         return "sucess";
     }
+    @PostMapping("authors/add/{id}/book/{book_id}")
+    public String addAuthorsBook(@PathVariable(value = "id") UUID id,
+                                     @PathVariable(value = "book_id") UUID book_id)
+    {
 
+        authorService.postAuthorsBook(id, book_id);
+        return "sucess";
+    }
     @DeleteMapping("delauthors")
     public String delAuthors() {
         authorService.delAuthors();

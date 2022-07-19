@@ -34,8 +34,8 @@ public class Book {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        Author history = (Author) o;
-        return getId() != null && Objects.equals(getId(), history.getId());
+        Book book = (Book) o;
+        return getId() != null && Objects.equals(getId(), book.getId());
     }
 
     @Override

@@ -30,4 +30,7 @@ public class BookService {
     public List<Book> getBook(String name){
         return bookRepository.findBookByName(name);
     }
+    public Book getBookById(UUID id){
+        return bookRepository.findById(id).get();
+    }
 }

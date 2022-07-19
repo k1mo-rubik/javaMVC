@@ -39,7 +39,9 @@ public class Author {
         Author history = (Author) o;
         return getId() != null && Objects.equals(getId(), history.getId());
     }
-
+    public void addAuthorsBook(Book book){
+        books.add(book);
+    }
     @Override
     public int hashCode() {
         return getClass().hashCode();
