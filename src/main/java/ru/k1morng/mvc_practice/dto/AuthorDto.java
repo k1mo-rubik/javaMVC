@@ -17,5 +17,6 @@ public class AuthorDto {
     private UUID id;
     private String name;
     private int age;
-    private Set<BookDto> bookSet;
+
+    Set<BookDto> bookSet;
 }

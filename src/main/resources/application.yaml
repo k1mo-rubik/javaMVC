@@ -3,7 +3,7 @@ server:
   servlet:
     encoding:
       force-response: true
-      charset: utf-8
+      charset: UTF-8
 
 spring:
   main:

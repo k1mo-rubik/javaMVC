@@ -5,9 +5,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.dto.BookDto;
-import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.entity.Book;
 
 import java.util.UUID;

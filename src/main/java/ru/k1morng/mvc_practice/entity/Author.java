@@ -35,7 +35,7 @@ public class Author {
     @JoinColumn(name = "author_id")
     private Set<Book> books = new HashSet<>();
 
-        @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -46,9 +46,11 @@ public class Author {
         Author history = (Author) o;
         return getId() != null && Objects.equals(getId(), history.getId());
     }
-    public void addAuthorsBook(Book book){
+
+    public void addAuthorsBook(Book book) {
         books.add(book);
     }
+
     @Override
     public int hashCode() {
         return getClass().hashCode();

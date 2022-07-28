@@ -18,17 +18,16 @@ import java.util.stream.Collectors;
 public abstract class AuthorMapper {
     public static final AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
 
-
-    @Mapping(target = "deleted", expression = "java(false)")
     @Mapping(target = "id", expression = "java(UUID.randomUUID())")
+    @Mapping(target = "deleted", expression = "java(false)")
     public abstract Author fromDto(AuthorDto authorDto);
 
     @InheritInverseConfiguration
-    @Mapping(target = "bookSet", source = "books", qualifiedByName = "booksDtoList")
+    @Mapping(target = "bookSet", source = "books", qualifiedByName = "bookDtoList")
     public abstract AuthorDto toAuthorDto(Author author);
 
     @Named("bookDtoList")
-    public static Set<BookDto>bookDtoList(Set<Book> books) {
+    public static Set<BookDto> bookDtoList(Set<Book> books) {
         return books.stream().map(BookMapper.INSTANCE::toBookDto).collect(Collectors.toSet());//методреференс
     }
 
