@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,12 +25,17 @@ public class Author {
     private String name;
     @Column(name = "age")
     private int age;
+
+    @Column(name = "deleted")
+    private boolean deleted;
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Set<Book> books = new HashSet<>();
 
-
-    @Override
+        @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

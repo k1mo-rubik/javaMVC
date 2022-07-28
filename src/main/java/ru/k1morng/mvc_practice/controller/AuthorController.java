@@ -2,6 +2,7 @@ package ru.k1morng.mvc_practice.controller;
 
 
 import org.springframework.web.bind.annotation.*;
+import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.entity.Book;
 import ru.k1morng.mvc_practice.service.AuthorService;
@@ -19,8 +20,8 @@ public class AuthorController {
 
 
     @PostMapping("postauthors")
-    public String postAuthors(@RequestBody Author newAuthor) {
-        authorService.postAuthor(newAuthor);
+    public String postAuthors(@RequestBody AuthorDto newAuthorDto) {
+        authorService.postAuthor(newAuthorDto);
         return "sucess";
     }
     @PostMapping("authors/add/{id}/book/{book_id}")
@@ -46,8 +47,10 @@ public class AuthorController {
 
 
     @GetMapping("getauthors")
-    public List<Author> getAuthors() {
+    public List<AuthorDto> getAuthors() {
+//    public List<Author> getAuthors() {
         return authorService.getAuthorList();
+//        return authorService.getAuthorList();
     }
 
 

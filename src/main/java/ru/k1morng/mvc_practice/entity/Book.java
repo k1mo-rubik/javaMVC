@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.mapstruct.factory.Mappers;
+import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,7 @@ public class Book {
     private String name;
     @Column(name = "pages")
     private int pages;
+
 
     @Override
     public boolean equals(Object o) {

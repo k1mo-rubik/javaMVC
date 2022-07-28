@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'org.mapstruct:mapstruct:1.5.2.Final'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
