@@ -4,8 +4,7 @@ package ru.k1morng.mvc_practice.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
-import ru.k1morng.mvc_practice.entity.Author;
-import ru.k1morng.mvc_practice.entity.Book;
+import ru.k1morng.mvc_practice.handler.ControllerExceptionHandler;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
 import java.util.List;
@@ -48,6 +47,7 @@ public class AuthorController {
 
 
     @GetMapping("getauthors/page/{page}/size/{size}")
+    @ExceptionHandler(ControllerExceptionHandler.class)
     public ResponseEntity<List<AuthorDto>> getAuthors(
             @PathVariable(value = "page") int page,
             @PathVariable(value = "size") int size

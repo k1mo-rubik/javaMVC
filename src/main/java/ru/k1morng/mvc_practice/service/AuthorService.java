@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
-import ru.k1morng.mvc_practice.mapper.BookMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
 
@@ -29,14 +28,15 @@ public class AuthorService {
     }
 
 
-public void postAuthor(AuthorDto authordto) {
-    Author author = AuthorMapper.INSTANCE.fromDto(authordto);
-    author.setCreatedDate(LocalDateTime.now());
-    authorRepository.save(author);
-}
+    public void postAuthor(AuthorDto authordto) {
+        Author author = AuthorMapper.INSTANCE.fromDto(authordto);
+        author.setCreatedDate(LocalDateTime.now());
+        authorRepository.save(author);
+    }
+
     public void postAuthorsBook(UUID id, UUID book_id) {
         Author tempA = authorRepository.findById(id).get();
-        tempA.addAuthorsBook(BookMapper.INSTANCE.fromDto(bookService.getBookById(book_id).getBody()));
+        tempA.addAuthorsBook(bookService.getBookById(book_id));
         authorRepository.save(tempA);
     }
 
@@ -45,24 +45,24 @@ public void postAuthor(AuthorDto authordto) {
     }
 
     public void delAuthor(UUID id) {
-//        authorRepository.deleteById(id);
-     var deltedAuthor = authorRepository.findById(id).get();
-     deltedAuthor.setDeleted(true);
-     authorRepository.save(deltedAuthor);
+        var deltedAuthor = authorRepository.findById(id).get();
+        deltedAuthor.setDeleted(true);
+        authorRepository.save(deltedAuthor);
     }
 
 
     public ResponseEntity<List<AuthorDto>> getAuthorList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-
-//        return authorRepository.findAll();
-//        var result = authorRepository.findAll().stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList());
-        var result = ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalse(pageable).stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList()));
-
-        return result;
+        return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalse(pageable).
+                stream().map(AuthorMapper.INSTANCE::toAuthorDto).
+                collect(Collectors.toList()));
     }
 
     public ResponseEntity<List<AuthorDto>> getAuthor(String name) {
-        return ResponseEntity.ok(authorRepository.findAuthorsByName(name).stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList()));
+
+        return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalseAndName(name).
+                stream().map(AuthorMapper.INSTANCE::toAuthorDto).
+                collect(Collectors.toList()));
+
     }
 }

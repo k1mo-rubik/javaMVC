@@ -20,7 +20,6 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
     public void postBook(BookDto bookdto){
-        //Author author = AuthorMapper.INSTANCE.fromDto(authordto);
         Book book = BookMapper.INSTANCE.fromDto(bookdto);
 //        book.setId(UUID.randomUUID());
         bookRepository.save(book);
