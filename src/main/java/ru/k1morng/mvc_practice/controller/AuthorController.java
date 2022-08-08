@@ -1,22 +1,16 @@
 package ru.k1morng.mvc_practice.controller;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
-import ru.k1morng.mvc_practice.entity.Author;
-import ru.k1morng.mvc_practice.exception.AuthorIsDeletedException;
-import ru.k1morng.mvc_practice.exception.EmptyPageException;
-import ru.k1morng.mvc_practice.exception.InvalidBookToAuthorException;
+import ru.k1morng.mvc_practice.handler.ControllerExceptionHandler;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
 
@@ -24,53 +18,50 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @PostMapping("")
-    public ResponseEntity<Author> postAuthor(@Valid @RequestBody AuthorDto newAuthorDto) {
-        return new ResponseEntity<>(authorService.postAuthor(newAuthorDto), HttpStatus.CREATED);
-    }
 
-    @PostMapping("{id}/book/{book_id}")
-    public ResponseEntity<String> addAuthorToBook(@PathVariable(value = "id") UUID id,
-                                                  @PathVariable(value = "book_id") UUID book_id) throws InvalidBookToAuthorException
-    {
-        authorService.postAuthorsBook(id, book_id);
-        return ResponseEntity.ok("success");
+    @PostMapping("postauthors")
+    public ResponseEntity<String> postAuthors(@RequestBody AuthorDto newAuthorDto) {
+        authorService.postAuthor(newAuthorDto);
+        return ResponseEntity.ok("sucess");
     }
-    @DeleteMapping("")
+    @PostMapping("authors/add/{id}/book/{book_id}")
+    public ResponseEntity<String> addAuthorsBook(@PathVariable(value = "id") UUID id,
+                                     @PathVariable(value = "book_id") UUID book_id)
+    {
+
+        authorService.postAuthorsBook(id, book_id);
+        return ResponseEntity.ok("sucess");
+    }
+    @DeleteMapping("delauthors")
     public ResponseEntity<String> delAuthors() {
         authorService.delAuthors();
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("sucess");
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) throws AuthorIsDeletedException {
+    @DeleteMapping("delauthors/{id}")
+    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) {
         authorService.delAuthor(id);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("sucess");
     }
 
 
-    @GetMapping("/page/{page}/size/{size}")
-    public ResponseEntity<List<AuthorDto>> getAuthors (
+    @GetMapping("getauthors/page/{page}/size/{size}")
+    @ExceptionHandler(ControllerExceptionHandler.class)
+    public ResponseEntity<List<AuthorDto>> getAuthors(
             @PathVariable(value = "page") int page,
             @PathVariable(value = "size") int size
-            ) throws EmptyPageException {
+            ) {
 
+//    public List<Author> getAuthors() {
         return authorService.getAuthorList(page, size);
+//        return authorService.getAuthorList();
     }
 
 
-    @GetMapping("/{name}")
-    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) throws AuthorIsDeletedException {
+    @GetMapping("getauthors/{name}")
+    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) {
         return authorService.getAuthor(name);
     }
-//    @DeleteMapping("/test")
-//    public ResponseEntity<List<AuthorDto>> testMethod() throws AuthorIsDeletedException, EmptyPageException{
-//
-//            AuthorRepository authorRepository = null;
-//            UUID.fromString(authorService.delAuthor(getAuthors(0, 1000).getBody().stream().map(AuthorDto::getId).toString())))
-//            authorService.delAuthor(getAuthors(0, 1000).getBody().stream().map(AuthorDto::getId).toString());
-//
-//    }
 }
 
