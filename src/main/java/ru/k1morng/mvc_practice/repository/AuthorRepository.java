@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, UUID>{
 
-    List<AuthorDto> findAuthorsByName(String name);
+    List<Author> findAuthorsByName(String name);
     Page<Author> findAuthorsByDeletedIsFalse(Pageable pageable);
 
 //    private List<AuthorDto> authorList;

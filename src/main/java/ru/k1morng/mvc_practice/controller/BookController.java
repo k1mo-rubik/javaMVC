@@ -1,5 +1,6 @@
 package ru.k1morng.mvc_practice.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.BookDto;
 import ru.k1morng.mvc_practice.entity.Book;
@@ -19,27 +20,27 @@ public class BookController {
 
 
         @PostMapping("postbook")
-        public String postBook(@RequestBody BookDto newBook) {
+        public ResponseEntity<String> postBook(@RequestBody BookDto newBook) {
             bookService.postBook(newBook);
-            return "sucess";
+            return ResponseEntity.ok("sucess");
         }
 
         @DeleteMapping("delbook")
-        public String delBook() {
+        public ResponseEntity<String> delBook() {
             bookService.delBook();
-            return "sucess";
+            return ResponseEntity.ok("sucess");
         }
 
 
         @DeleteMapping("delbook/{id}")
-        public String delBook(@PathVariable(value = "id") UUID id) {
+        public ResponseEntity<String> delBook(@PathVariable(value = "id") UUID id) {
             bookService.delBook(id);
-            return "sucess";
+            return ResponseEntity.ok("sucess");
         }
 
 
         @GetMapping("getbook")
-        public List<Book> getBook() {
+        public ResponseEntity<List<BookDto>> getBook() {
             return bookService.getBookList();
         }
 
@@ -47,7 +48,7 @@ public class BookController {
 
 
         @GetMapping("getbook/{name}")
-        public List<Book> getBook(@PathVariable(value = "name") String name) {
+        public ResponseEntity<List<BookDto>> getBook(@PathVariable(value = "name") String name) {
             return bookService.getBook(name);
         }
     }

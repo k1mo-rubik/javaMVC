@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
+import ru.k1morng.mvc_practice.mapper.BookMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
 
@@ -35,7 +36,7 @@ public void postAuthor(AuthorDto authordto) {
 }
     public void postAuthorsBook(UUID id, UUID book_id) {
         Author tempA = authorRepository.findById(id).get();
-        tempA.addAuthorsBook(bookService.getBookById(book_id));
+        tempA.addAuthorsBook(BookMapper.INSTANCE.fromDto(bookService.getBookById(book_id).getBody()));
         authorRepository.save(tempA);
     }
 
@@ -62,6 +63,6 @@ public void postAuthor(AuthorDto authordto) {
     }
 
     public ResponseEntity<List<AuthorDto>> getAuthor(String name) {
-        return ResponseEntity.ok(authorRepository.findAuthorsByName(name));
+        return ResponseEntity.ok(authorRepository.findAuthorsByName(name).stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList()));
     }
 }
