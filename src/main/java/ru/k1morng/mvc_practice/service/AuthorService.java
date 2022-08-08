@@ -10,9 +10,7 @@ import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
-
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,10 +26,11 @@ public class AuthorService {
     }
 
 
-    public void postAuthor(AuthorDto authordto) {
+    public Author postAuthor(AuthorDto authordto) {
         Author author = AuthorMapper.INSTANCE.fromDto(authordto);
         author.setCreatedDate(LocalDateTime.now());
-        authorRepository.save(author);
+        return authorRepository.save(author);
+//        return author;
     }
 
     public void postAuthorsBook(UUID id, UUID book_id) {
