@@ -22,7 +22,7 @@ public class AuthorController {
     @PostMapping("postauthors")
     public ResponseEntity<String> postAuthors(@RequestBody AuthorDto newAuthorDto) {
         authorService.postAuthor(newAuthorDto);
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
     @PostMapping("authors/add/{id}/book/{book_id}")
     public ResponseEntity<String> addAuthorsBook(@PathVariable(value = "id") UUID id,
@@ -30,19 +30,19 @@ public class AuthorController {
     {
 
         authorService.postAuthorsBook(id, book_id);
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
     @DeleteMapping("delauthors")
     public ResponseEntity<String> delAuthors() {
         authorService.delAuthors();
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
 
 
     @DeleteMapping("delauthors/{id}")
     public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) {
         authorService.delAuthor(id);
-        return ResponseEntity.ok("sucess");
+        return ResponseEntity.ok("success");
     }
 
 
