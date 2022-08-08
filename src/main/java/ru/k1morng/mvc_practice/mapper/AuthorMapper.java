@@ -10,9 +10,8 @@ import ru.k1morng.mvc_practice.entity.Book;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.Date;
 
-@Mapper(componentModel = "spring",
+@Mapper(
         injectionStrategy = InjectionStrategy.FIELD,
         imports = {UUID.class},
         uses = {BookMapper.class, Set.class})
@@ -29,7 +28,7 @@ public abstract class AuthorMapper {
 
     @Named("bookDtoList")
     public static Set<BookDto> bookDtoList(Set<Book> books) {
-        return books.stream().map(BookMapper.INSTANCE::toBookDto).collect(Collectors.toSet());//методреференс
+        return books.stream().map(BookMapper.INSTANCE::toBookDto).collect(Collectors.toSet());//метод референс
     }
 
 }

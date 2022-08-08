@@ -45,9 +45,9 @@ public class AuthorService {
     }
 
     public void delAuthor(UUID id) {
-        var deltedAuthor = authorRepository.findById(id).get();
-        deltedAuthor.setDeleted(true);
-        authorRepository.save(deltedAuthor);
+        var deletedAuthor = authorRepository.findById(id).get();
+        deletedAuthor.setDeleted(true);
+        authorRepository.save(deletedAuthor);
     }
 
 
