@@ -10,6 +10,7 @@ import ru.k1morng.mvc_practice.entity.Book;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.Date;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.FIELD,

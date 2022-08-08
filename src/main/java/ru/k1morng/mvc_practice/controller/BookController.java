@@ -1,6 +1,7 @@
 package ru.k1morng.mvc_practice.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.k1morng.mvc_practice.dto.BookDto;
 import ru.k1morng.mvc_practice.entity.Book;
 import ru.k1morng.mvc_practice.service.BookService;
 
@@ -18,7 +19,7 @@ public class BookController {
 
 
         @PostMapping("postbook")
-        public String postBook(@RequestBody Book newBook) {
+        public String postBook(@RequestBody BookDto newBook) {
             bookService.postBook(newBook);
             return "sucess";
         }

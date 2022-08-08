@@ -1,12 +1,18 @@
 package ru.k1morng.mvc_practice.service;
 
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
+
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,12 +27,10 @@ public class AuthorService {
         this.bookService = bookService;
     }
 
-//    public void postAuthor(Author author) {
-//        author.setId(UUID.randomUUID());
-//        authorRepository.save(author);
-//    }
+
 public void postAuthor(AuthorDto authordto) {
     Author author = AuthorMapper.INSTANCE.fromDto(authordto);
+    author.setCreatedDate(LocalDateTime.now());
     authorRepository.save(author);
 }
     public void postAuthorsBook(UUID id, UUID book_id) {
@@ -46,16 +50,18 @@ public void postAuthor(AuthorDto authordto) {
      authorRepository.save(deltedAuthor);
     }
 
-    //    public List<Author> getAuthorList(){
+
+    public ResponseEntity<List<AuthorDto>> getAuthorList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
 //        return authorRepository.findAll();
-//    }
-    public List<AuthorDto> getAuthorList() {
-//        return authorRepository.findAll();
-        var result = authorRepository.findAll().stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList());
+//        var result = authorRepository.findAll().stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList());
+        var result = ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalse(pageable).stream().map(AuthorMapper.INSTANCE::toAuthorDto).collect(Collectors.toList()));
+
         return result;
     }
 
-    public List<Author> getAuthor(String name) {
-        return authorRepository.findAuthorsByName(name);
+    public ResponseEntity<List<AuthorDto>> getAuthor(String name) {
+        return ResponseEntity.ok(authorRepository.findAuthorsByName(name));
     }
 }

@@ -1,6 +1,7 @@
 package ru.k1morng.mvc_practice.controller;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
@@ -20,42 +21,46 @@ public class AuthorController {
 
 
     @PostMapping("postauthors")
-    public String postAuthors(@RequestBody AuthorDto newAuthorDto) {
+    public ResponseEntity<String> postAuthors(@RequestBody AuthorDto newAuthorDto) {
         authorService.postAuthor(newAuthorDto);
-        return "sucess";
+        return ResponseEntity.ok("sucess");
     }
     @PostMapping("authors/add/{id}/book/{book_id}")
-    public String addAuthorsBook(@PathVariable(value = "id") UUID id,
+    public ResponseEntity<String> addAuthorsBook(@PathVariable(value = "id") UUID id,
                                      @PathVariable(value = "book_id") UUID book_id)
     {
 
         authorService.postAuthorsBook(id, book_id);
-        return "sucess";
+        return ResponseEntity.ok("sucess");
     }
     @DeleteMapping("delauthors")
-    public String delAuthors() {
+    public ResponseEntity<String> delAuthors() {
         authorService.delAuthors();
-        return "sucess";
+        return ResponseEntity.ok("sucess");
     }
 
 
     @DeleteMapping("delauthors/{id}")
-    public String delAuthor(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) {
         authorService.delAuthor(id);
-        return "sucess";
+        return ResponseEntity.ok("sucess");
     }
 
 
-    @GetMapping("getauthors")
-    public List<AuthorDto> getAuthors() {
+    @GetMapping("getauthors/page/{page}/size/{size}")
+    public ResponseEntity<List<AuthorDto>> getAuthors(
+            @PathVariable(value = "page") int page,
+            @PathVariable(value = "size") int size
+            ) {
+
 //    public List<Author> getAuthors() {
-        return authorService.getAuthorList();
+        return authorService.getAuthorList(page, size);
 //        return authorService.getAuthorList();
     }
 
 
     @GetMapping("getauthors/{name}")
-    public List<Author> getAuthor(@PathVariable(value = "name") String name) {
+    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) {
         return authorService.getAuthor(name);
     }
 }
