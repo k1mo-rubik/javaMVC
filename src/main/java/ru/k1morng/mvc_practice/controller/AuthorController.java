@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
+import ru.k1morng.mvc_practice.exception.UserNotFoundException;
 import ru.k1morng.mvc_practice.handler.ControllerExceptionHandler;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
@@ -63,7 +64,7 @@ public class AuthorController {
 
 
     @GetMapping("authors/{name}")
-    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) {
+    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) throws UserNotFoundException {
         return authorService.getAuthor(name);
     }
 }
