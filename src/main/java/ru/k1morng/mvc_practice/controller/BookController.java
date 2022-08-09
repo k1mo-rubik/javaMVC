@@ -1,6 +1,5 @@
 package ru.k1morng.mvc_practice.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.BookDto;
 import ru.k1morng.mvc_practice.entity.Book;
@@ -9,7 +8,9 @@ import ru.k1morng.mvc_practice.service.BookService;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
+
+//TODO привести всю архитектуру в вид как Author (все классы)
+@RestController()
 public class BookController {
 
         private BookService bookService;
@@ -19,36 +20,36 @@ public class BookController {
         }
 
 
-        @PostMapping("postbook")
-        public ResponseEntity<String> postBook(@RequestBody BookDto newBook) {
+        @PostMapping("books")
+        public String postBook(@RequestBody BookDto newBook) {
             bookService.postBook(newBook);
-            return ResponseEntity.ok("sucess");
+            return "success";
         }
 
-        @DeleteMapping("delbook")
-        public ResponseEntity<String> delBook() {
+        @DeleteMapping("books")
+        public String delBook() {
             bookService.delBook();
-            return ResponseEntity.ok("sucess");
+            return "sucess";
         }
 
 
-        @DeleteMapping("delbook/{id}")
-        public ResponseEntity<String> delBook(@PathVariable(value = "id") UUID id) {
+        @DeleteMapping("books/{id}")
+        public String delBook(@PathVariable(value = "id") UUID id) {
             bookService.delBook(id);
-            return ResponseEntity.ok("sucess");
+            return "sucess";
         }
 
 
-        @GetMapping("getbook")
-        public ResponseEntity<List<BookDto>> getBook() {
+        @GetMapping("books")
+        public List<Book> getBook() {
             return bookService.getBookList();
         }
 
 
 
 
-        @GetMapping("getbook/{name}")
-        public ResponseEntity<List<BookDto>> getBook(@PathVariable(value = "name") String name) {
+        @GetMapping("books/{name}")
+        public List<Book> getBook(@PathVariable(value = "name") String name) {
             return bookService.getBook(name);
         }
     }
