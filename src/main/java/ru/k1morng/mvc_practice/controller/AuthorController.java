@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.exception.EmptyPageException;
-import ru.k1morng.mvc_practice.exception.UserNotFoundException;
+import ru.k1morng.mvc_practice.exception.AuthorIsDeletedException;
+import ru.k1morng.mvc_practice.exception.InvalidBookToAuthorException;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
 
@@ -22,33 +24,33 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @PostMapping("author")
+    @PostMapping("")
     public ResponseEntity<Author> postAuthor(@Valid @RequestBody AuthorDto newAuthorDto) {
         return new ResponseEntity<>(authorService.postAuthor(newAuthorDto), HttpStatus.CREATED);
     }
 
-    @PostMapping("authors/add/{id}/book/{book_id}")
+    @PostMapping("{id}/book/{book_id}")
     public ResponseEntity<String> addAuthorToBook(@PathVariable(value = "id") UUID id,
-                                                  @PathVariable(value = "book_id") UUID book_id)
+                                                  @PathVariable(value = "book_id") UUID book_id) throws InvalidBookToAuthorException
     {
         authorService.postAuthorsBook(id, book_id);
         return ResponseEntity.ok("success");
     }
-    @DeleteMapping("authors")
+    @DeleteMapping("")
     public ResponseEntity<String> delAuthors() {
         authorService.delAuthors();
         return ResponseEntity.ok("success");
     }
 
 
-    @DeleteMapping("authors/{id}")
-    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) throws UserNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) throws AuthorIsDeletedException {
         authorService.delAuthor(id);
         return ResponseEntity.ok("success");
     }
 
 
-    @GetMapping("authors/page/{page}/size/{size}")
+    @GetMapping("/page/{page}/size/{size}")
     public ResponseEntity<List<AuthorDto>> getAuthors (
             @PathVariable(value = "page") int page,
             @PathVariable(value = "size") int size
@@ -58,8 +60,8 @@ public class AuthorController {
     }
 
 
-    @GetMapping("authors/{name}")
-    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) throws UserNotFoundException {
+    @GetMapping("/{name}")
+    public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) throws AuthorIsDeletedException {
         return authorService.getAuthor(name);
     }
 }
