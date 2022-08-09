@@ -39,6 +39,8 @@ public class AuthorControllerExceptionHandler extends Exception {
 //    protected ResponseEntity<EmptyPageException> handleEmptyPageException(){
 //        return new ResponseEntity<>(new EmptyPageException("This page is empty"), HttpStatus.FORBIDDEN);
 //    }
+
+    //TODO все HTTP-303 должны автоматически переходить на ближайшую страницу
     @ExceptionHandler(EmptyPageException.class)
     @ResponseStatus(HttpStatus.SEE_OTHER)
     protected Map<String, String> handleEmptyPageException(EmptyPageException ex) {
@@ -55,6 +57,8 @@ public class AuthorControllerExceptionHandler extends Exception {
         return errorMap;
     }
 
+    //TODO все HTTP-303 должны переводить на ближайшего автора (если введено имя),
+    // по UUID выдавать JSON с предложением ближайшего верного идентификатора
     @ExceptionHandler
     @ResponseStatus(HttpStatus.SEE_OTHER)
     protected Map<String, String> handleNoAuthorFoundException(NoAuthorFoundException ex) {
