@@ -14,9 +14,6 @@ import java.util.Map;
 //@ResponseStatus(value = HttpStatus.NOT_FOUND)
 @RestControllerAdvice
 public class ControllerExceptionHandler extends Exception {
-    //    public ControllerExceptionHandler(String message) {
-//        super(message);
-//    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {
@@ -26,6 +23,7 @@ public class ControllerExceptionHandler extends Exception {
         });
         return errorMap;
     }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleUserNotFoundException(UserNotFoundException ex){
