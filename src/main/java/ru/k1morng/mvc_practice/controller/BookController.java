@@ -8,7 +8,9 @@ import ru.k1morng.mvc_practice.service.BookService;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
+
+//TODO привести всю архитектуру в вид как Author (все классы)
+@RestController()
 public class BookController {
 
         private BookService bookService;
@@ -18,27 +20,27 @@ public class BookController {
         }
 
 
-        @PostMapping("postbook")
+        @PostMapping("books")
         public String postBook(@RequestBody BookDto newBook) {
             bookService.postBook(newBook);
-            return "sucess";
+            return "success";
         }
 
-        @DeleteMapping("delbook")
+        @DeleteMapping("books")
         public String delBook() {
             bookService.delBook();
             return "sucess";
         }
 
 
-        @DeleteMapping("delbook/{id}")
+        @DeleteMapping("books/{id}")
         public String delBook(@PathVariable(value = "id") UUID id) {
             bookService.delBook(id);
             return "sucess";
         }
 
 
-        @GetMapping("getbook")
+        @GetMapping("books")
         public List<Book> getBook() {
             return bookService.getBookList();
         }
@@ -46,7 +48,7 @@ public class BookController {
 
 
 
-        @GetMapping("getbook/{name}")
+        @GetMapping("books/{name}")
         public List<Book> getBook(@PathVariable(value = "name") String name) {
             return bookService.getBook(name);
         }
