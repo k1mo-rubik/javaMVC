@@ -32,3 +32,14 @@ logging:
   level:
     root: warn
     ru: debug
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
