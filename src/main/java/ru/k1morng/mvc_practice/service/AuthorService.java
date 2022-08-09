@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.exception.EmptyPageException;
-import ru.k1morng.mvc_practice.exception.UserNotFoundException;
+import ru.k1morng.mvc_practice.exception.AuthorIsDeletedException;
+import ru.k1morng.mvc_practice.exception.InvalidBookToAuthorException;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
@@ -35,20 +36,35 @@ public class AuthorService {
 //        return author;
     }
 
-    public void postAuthorsBook(UUID id, UUID book_id) {
-        Author tempA = authorRepository.findById(id).get();
-        tempA.addAuthorsBook(bookService.getBookById(book_id));
-        authorRepository.save(tempA);
+    //TODO решить, нужно ли переносить логику выброса исключений в BookService
+    //TODO также NoAuthorFoundException, переопределить выброс сообщений
+    public void postAuthorsBook(UUID id, UUID book_id) throws InvalidBookToAuthorException {
+        Author author = authorRepository.findById(id).get();
+        if(author.isDeleted()){
+            throw new InvalidBookToAuthorException(String.format("Author with id %s is deleted", id));
+        }
+        //TODO поменять на проверку по isDeleted (обработать несуществующий UUID)
+        else if(bookService.getBookById(book_id).equals(null)){
+            throw new InvalidBookToAuthorException(String.format("No book with id %s found", book_id));
+        }
+        else{
+            author.addAuthorsBook(bookService.getBookById(book_id));
+        }
+        authorRepository.save(author);
     }
 
+    //TODO сделать проверку, пустая ли база (без exception)
     public void delAuthors() {
         authorRepository.deleteAll();
     }
 
-    public void delAuthor(UUID id) throws UserNotFoundException {
+
+    //TODO решить проблему неверно введенного ID (No value present) и Invalid UUID String,
+    // выбросить свои исключения (можно отнаследовать от существующих NoAuthorFoundExcpeption уже создан)
+    public void delAuthor(UUID id) throws AuthorIsDeletedException {
         var deletedAuthor = authorRepository.findById(id).get();
-        if(!deletedAuthor.isDeleted()){
-            throw new UserNotFoundException("User already deleted");
+        if(deletedAuthor.isDeleted()){
+            throw new AuthorIsDeletedException("User already deleted");
         }
         else {
             deletedAuthor.setDeleted(true);
@@ -70,14 +86,17 @@ public class AuthorService {
         }
     }
 
-    public ResponseEntity<List<AuthorDto>> getAuthor(String name) throws UserNotFoundException {
+    //TODO попробовать сделать совет по имени пользователя
+    // (ввели "Ale", программа предложит: "Возможно вы имели ввиду Alex?", т.е. поиск по базе внутренней)
+
+    public ResponseEntity<List<AuthorDto>> getAuthor(String name) throws AuthorIsDeletedException {
         if(authorRepository.findAuthorsByDeletedIsFalseAndName(name).size() != 0){
             return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalseAndName(name).
                     stream().map(AuthorMapper.INSTANCE::toAuthorDto).
                     collect(Collectors.toList()));
         }
         else{
-            throw new UserNotFoundException(String.format("User with name %s not found", name));
+            throw new AuthorIsDeletedException(String.format("User with name %s not found", name));
         }
 
 
