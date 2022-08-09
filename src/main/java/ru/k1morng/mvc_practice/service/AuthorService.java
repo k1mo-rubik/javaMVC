@@ -36,7 +36,7 @@ public class AuthorService {
 //        return author;
     }
 
-    //TODO решить, нужно ли переносить логику выброса исключений в BookService
+    // TODO решить, нужно ли переносить логику выброса исключений в BookService
     //TODO также NoAuthorFoundException, переопределить выброс сообщений
     public void postAuthorsBook(UUID id, UUID book_id) throws InvalidBookToAuthorException {
         Author author = authorRepository.findById(id).get();
@@ -53,14 +53,15 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    //TODO сделать проверку, пустая ли база (без exception)
+    //TODO пометить всех авторов как удаленных и переместить в другую коллекцию, реализовать логику роллбэка авторов
     public void delAuthors() {
         authorRepository.deleteAll();
     }
 
 
     //TODO решить проблему неверно введенного ID (No value present) и Invalid UUID String,
-    // выбросить свои исключения (можно отнаследовать от существующих NoAuthorFoundExcpeption уже создан)
+    // выбросить свои исключения (можно отнаследовать от существующих NoAuthorFoundException уже создан)
+    // см. todo выше
     public void delAuthor(UUID id) throws AuthorIsDeletedException {
         var deletedAuthor = authorRepository.findById(id).get();
         if(deletedAuthor.isDeleted()){

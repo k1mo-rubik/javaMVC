@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
-import ru.k1morng.mvc_practice.exception.EmptyPageException;
 import ru.k1morng.mvc_practice.exception.AuthorIsDeletedException;
+import ru.k1morng.mvc_practice.exception.EmptyPageException;
 import ru.k1morng.mvc_practice.exception.InvalidBookToAuthorException;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
@@ -64,5 +64,13 @@ public class AuthorController {
     public ResponseEntity<List<AuthorDto>> getAuthor(@PathVariable(value = "name") String name) throws AuthorIsDeletedException {
         return authorService.getAuthor(name);
     }
+//    @DeleteMapping("/test")
+//    public ResponseEntity<List<AuthorDto>> testMethod() throws AuthorIsDeletedException, EmptyPageException{
+//
+//            AuthorRepository authorRepository = null;
+//            UUID.fromString(authorService.delAuthor(getAuthors(0, 1000).getBody().stream().map(AuthorDto::getId).toString())))
+//            authorService.delAuthor(getAuthors(0, 1000).getBody().stream().map(AuthorDto::getId).toString());
+//
+//    }
 }
 
