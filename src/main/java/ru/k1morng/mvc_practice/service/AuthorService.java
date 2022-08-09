@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
+import ru.k1morng.mvc_practice.exception.EmptyPageException;
 import ru.k1morng.mvc_practice.exception.UserNotFoundException;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
@@ -44,18 +45,29 @@ public class AuthorService {
         authorRepository.deleteAll();
     }
 
-    public void delAuthor(UUID id) {
+    public void delAuthor(UUID id) throws UserNotFoundException {
         var deletedAuthor = authorRepository.findById(id).get();
-        deletedAuthor.setDeleted(true);
-        authorRepository.save(deletedAuthor);
+        if(!deletedAuthor.isDeleted()){
+            throw new UserNotFoundException("User already deleted");
+        }
+        else {
+            deletedAuthor.setDeleted(true);
+            authorRepository.save(deletedAuthor);
+        }
     }
 
 
-    public ResponseEntity<List<AuthorDto>> getAuthorList(int page, int size) {
+    public ResponseEntity<List<AuthorDto>> getAuthorList(int page, int size) throws EmptyPageException {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalse(pageable).
-                stream().map(AuthorMapper.INSTANCE::toAuthorDto).
-                collect(Collectors.toList()));
+
+        if(authorRepository.findAuthorsByDeletedIsFalse(pageable).getContent().isEmpty()){
+            throw new EmptyPageException("No authors on this page");
+        }
+        else{
+            return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalse(pageable).
+                    stream().map(AuthorMapper.INSTANCE::toAuthorDto).
+                    collect(Collectors.toList()));
+        }
     }
 
     public ResponseEntity<List<AuthorDto>> getAuthor(String name) throws UserNotFoundException {

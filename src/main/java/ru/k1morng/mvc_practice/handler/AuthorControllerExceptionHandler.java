@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.k1morng.mvc_practice.exception.EmptyPageException;
 import ru.k1morng.mvc_practice.exception.UserNotFoundException;
 
 import java.util.HashMap;
@@ -31,4 +32,17 @@ public class AuthorControllerExceptionHandler extends Exception {
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
+
+//    @ExceptionHandler(EmptyPageException.class)
+//    protected ResponseEntity<EmptyPageException> handleEmptyPageException(){
+//        return new ResponseEntity<>(new EmptyPageException("This page is empty"), HttpStatus.FORBIDDEN);
+//    }
+    @ExceptionHandler(EmptyPageException.class)
+    @ResponseStatus(HttpStatus.SEE_OTHER)
+    protected Map<String, String> handleEmptyPageException(EmptyPageException ex){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("Error", ex.getMessage());
+        return errorMap;
+    }
+//
 }

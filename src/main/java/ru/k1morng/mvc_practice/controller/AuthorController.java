@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
+import ru.k1morng.mvc_practice.exception.EmptyPageException;
 import ru.k1morng.mvc_practice.exception.UserNotFoundException;
-import ru.k1morng.mvc_practice.handler.AuthorControllerExceptionHandler;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
 import javax.validation.Valid;
@@ -31,7 +31,6 @@ public class AuthorController {
     public ResponseEntity<String> addAuthorToBook(@PathVariable(value = "id") UUID id,
                                                   @PathVariable(value = "book_id") UUID book_id)
     {
-
         authorService.postAuthorsBook(id, book_id);
         return ResponseEntity.ok("success");
     }
@@ -43,22 +42,19 @@ public class AuthorController {
 
 
     @DeleteMapping("authors/{id}")
-    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<String> delAuthor(@PathVariable(value = "id") UUID id) throws UserNotFoundException {
         authorService.delAuthor(id);
         return ResponseEntity.ok("success");
     }
 
 
     @GetMapping("authors/page/{page}/size/{size}")
-    @ExceptionHandler(AuthorControllerExceptionHandler.class)
-    public ResponseEntity<List<AuthorDto>> getAuthors(
+    public ResponseEntity<List<AuthorDto>> getAuthors (
             @PathVariable(value = "page") int page,
             @PathVariable(value = "size") int size
-            ) {
+            ) throws EmptyPageException {
 
-//    public List<Author> getAuthors() {
         return authorService.getAuthorList(page, size);
-//        return authorService.getAuthorList();
     }
 
 
