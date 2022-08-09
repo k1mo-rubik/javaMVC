@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
+import ru.k1morng.mvc_practice.exception.UserNotFoundException;
 import ru.k1morng.mvc_practice.mapper.AuthorMapper;
 import ru.k1morng.mvc_practice.repository.AuthorRepository;
 
@@ -57,11 +58,16 @@ public class AuthorService {
                 collect(Collectors.toList()));
     }
 
-    public ResponseEntity<List<AuthorDto>> getAuthor(String name) {
+    public ResponseEntity<List<AuthorDto>> getAuthor(String name) throws UserNotFoundException {
+        if(authorRepository.findAuthorsByDeletedIsFalseAndName(name).size() != 0){
+            return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalseAndName(name).
+                    stream().map(AuthorMapper.INSTANCE::toAuthorDto).
+                    collect(Collectors.toList()));
+        }
+        else{
+            throw new UserNotFoundException(String.format("User with name %s not found", name));
+        }
 
-        return ResponseEntity.ok(authorRepository.findAuthorsByDeletedIsFalseAndName(name).
-                stream().map(AuthorMapper.INSTANCE::toAuthorDto).
-                collect(Collectors.toList()));
 
     }
 }
