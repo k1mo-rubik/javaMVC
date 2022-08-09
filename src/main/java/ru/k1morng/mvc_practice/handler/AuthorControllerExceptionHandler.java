@@ -13,7 +13,7 @@ import java.util.Map;
 
 //@ResponseStatus(value = HttpStatus.NOT_FOUND)
 @RestControllerAdvice
-public class ControllerExceptionHandler extends Exception {
+public class AuthorControllerExceptionHandler extends Exception {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {

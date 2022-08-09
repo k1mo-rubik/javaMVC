@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.k1morng.mvc_practice.dto.AuthorDto;
 import ru.k1morng.mvc_practice.entity.Author;
 import ru.k1morng.mvc_practice.exception.UserNotFoundException;
-import ru.k1morng.mvc_practice.handler.ControllerExceptionHandler;
+import ru.k1morng.mvc_practice.handler.AuthorControllerExceptionHandler;
 import ru.k1morng.mvc_practice.service.AuthorService;
 
 import javax.validation.Valid;
@@ -22,7 +22,6 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    // TODO настроить ExceptionHandler
     @PostMapping("author")
     public ResponseEntity<Author> postAuthor(@Valid @RequestBody AuthorDto newAuthorDto) {
         return new ResponseEntity<>(authorService.postAuthor(newAuthorDto), HttpStatus.CREATED);
@@ -51,7 +50,7 @@ public class AuthorController {
 
 
     @GetMapping("authors/page/{page}/size/{size}")
-    @ExceptionHandler(ControllerExceptionHandler.class)
+    @ExceptionHandler(AuthorControllerExceptionHandler.class)
     public ResponseEntity<List<AuthorDto>> getAuthors(
             @PathVariable(value = "page") int page,
             @PathVariable(value = "size") int size
