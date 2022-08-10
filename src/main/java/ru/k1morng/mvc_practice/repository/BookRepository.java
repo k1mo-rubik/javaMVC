@@ -2,7 +2,6 @@ package ru.k1morng.mvc_practice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.k1morng.mvc_practice.dto.BookDto;
 import ru.k1morng.mvc_practice.entity.Book;
 
 import java.util.List;
