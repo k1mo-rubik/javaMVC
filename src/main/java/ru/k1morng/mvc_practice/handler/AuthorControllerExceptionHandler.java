@@ -29,7 +29,7 @@ public class AuthorControllerExceptionHandler extends Exception {
 
     @ExceptionHandler(AuthorIsDeletedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected Map<String, String> handleUserNotFoundException(AuthorIsDeletedException ex) {
+    protected Map<String, String> handleAuthorNotFoundException(AuthorIsDeletedException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
