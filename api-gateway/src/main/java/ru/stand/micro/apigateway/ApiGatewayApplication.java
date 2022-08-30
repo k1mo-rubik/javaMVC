@@ -1,13 +1,13 @@
-package ru.k1morng.mvc_practice;
+package ru.stand.micro.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MvcPracticeApplication {
+public class ApiGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MvcPracticeApplication.class, args);
+        SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
 }
