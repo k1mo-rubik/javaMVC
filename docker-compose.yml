@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres
+    hostname: database
+    restart: always
+    environment:
+#      POSTGRES_PASSWORD: postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+
+  server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+
+  client:
+    build:
+     context: ./eureka-client
+     dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone = http://eureka:8080/eureka
+      - DB_URL=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      - server
+    hostname: client
+    ports:
+      - "8081:8081"
+
+  gateway:
+    depends_on:
+      - server
+    environment:
+      - eureka.client.service-url.defaultZone = http://eureka:8080/eureka
+    build: ./api-gateway
+    hostname: gateway
+    links:
+      - client
+    ports:
+      - "8082:8082"
+
