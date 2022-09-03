@@ -5,14 +5,14 @@ WORKDIR /home/gradle/src
 RUN gradle clean bootJar --no-daemon
 
 # Run
+FROM openjdk:11
+EXPOSE 8081
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/application.jar
+ENTRYPOINT ["java", "-jar", "/app/application.jar"]
 #FROM openjdk:11
 #EXPOSE 8081
 #RUN mkdir /app
-#COPY --from=build /home/gradle/src/build/libs/*.jar /app/application.jar
-#ENTRYPOINT ["java", "-jar", "/app/application.jar"]
-FROM openjdk:11:latest
-EXPOSE 8081
-RUN mkdir /app
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+#ARG JAR_FILE=target/*.jar
+#COPY ${JAR_FILE} app.jar
+#ENTRYPOINT ["java", "-jar", "/app.jar"]
