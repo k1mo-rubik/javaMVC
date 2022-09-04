@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-//@EnableEurekaClient
 public class AuthorService {
     private AuthorRepository authorRepository;
     private BookService bookService;
