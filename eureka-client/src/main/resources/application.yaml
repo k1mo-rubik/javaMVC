@@ -31,4 +31,7 @@ logging:
   level:
     root: warn
     ru: debug
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka/
