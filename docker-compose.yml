@@ -18,6 +18,8 @@ services:
     expose:
       - 5432
 
+
+
   eureka:
     networks:
       - default
@@ -34,14 +36,14 @@ services:
 
 
   client:
-#    restart: always
+    restart: always
     container_name: eureka-client
     build:
      context: ./eureka-client
      dockerfile: Dockerfile
     environment:
       - http://eureka:8080/eureka/
-      - POSTGRES_HOST = db
+      - spring.datasource.url=jdbc:postgresql://db:5432/postgres
     depends_on:
       - eureka
       - db
@@ -63,7 +65,6 @@ services:
     ports:
       - "8082:8082"
     environment:
-#     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8080/eureka
       - http://eureka:8080/eureka/
     links:
       - eureka
